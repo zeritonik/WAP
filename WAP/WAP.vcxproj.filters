@@ -27,6 +27,9 @@
     <ClInclude Include="source\types.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="source\window_funcs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\logers.cpp">
@@ -35,5 +38,13 @@
     <ClCompile Include="source\WapWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="source\window_funcs.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="WAP.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>

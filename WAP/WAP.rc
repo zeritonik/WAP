@@ -1,0 +1,3 @@
+#include "source/types.h"
+
+WAP_ICON ICON "resources/wap_icon.ico"

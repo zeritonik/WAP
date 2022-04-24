@@ -47,13 +47,13 @@
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)bin\$(Configuration)-$(Platform)\$(ProjectName)\</OutDir>
     <IntDir>$(SolutionDir)bin-interm\$(Configuration)-$(Platform)\$(ProjectName)\</IntDir>
-    <TargetName>wap</TargetName>
+    <TargetName>$(ProjectName)</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)bin\$(Configuration)-$(Platform)\$(ProjectName)\</OutDir>
     <IntDir>$(SolutionDir)bin-interm\$(Configuration)-$(Platform)\$(ProjectName)\</IntDir>
-    <TargetName>wap</TargetName>
+    <TargetName>$(ProjectName)</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -72,8 +72,11 @@
     </Link>
     <Lib>
       <AdditionalLibraryDirectories>$(ProjectDir)libraries\EasyLoger\;</AdditionalLibraryDirectories>
-      <AdditionalDependencies>EasyLoger.lib;gdi32.lib;</AdditionalDependencies>
+      <AdditionalDependencies>EasyLoger.lib;gdi32.lib;shell32.lib</AdditionalDependencies>
     </Lib>
+    <PostBuildEvent>
+      <Command>xcopy /Y $(IntDir)WAP.res $(OutDir)</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -94,18 +97,26 @@
     <Lib>
       <AdditionalLibraryDirectories>
       </AdditionalLibraryDirectories>
-      <AdditionalDependencies>user32.lib;gdi32.lib</AdditionalDependencies>
+      <AdditionalDependencies>user32.lib;gdi32.lib;shell32.lib</AdditionalDependencies>
     </Lib>
+    <PostBuildEvent>
+      <Command>xcopy /Y $(IntDir)WAP.res $(OutDir)</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="source\logers.h" />
     <ClInclude Include="source\types.h" />
+    <ClInclude Include="source\window_funcs.h" />
     <ClInclude Include="wap.h" />
     <ClInclude Include="source\WapWindow.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\logers.cpp" />
     <ClCompile Include="source\WapWindow.cpp" />
+    <ClCompile Include="source\window_funcs.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="WAP.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
