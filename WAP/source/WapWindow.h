@@ -23,13 +23,12 @@ private:
 
 	NOTIFYICONDATAA nid = { 0 };
 
-	virtual void waaCycle(bool*, HDC) = 0;
+	virtual void waaCycle(bool*) = 0;
 
 	/* messages ---*/
 	virtual inline int onMouseMove() = 0;
 	virtual inline int onMouseDown() = 0;
 	virtual inline int onMouseUp() = 0;
-
 	/*--- messages */
 protected:
 	bool running;
@@ -41,7 +40,8 @@ public:
 
 	WapWindow();
 	virtual ~WapWindow();
-	void startWaa();
+	void startWaaDesktop();
+	void startWaaWindow(HWND parent, int x, int y, int w, int h);
 
 	inline HWND getHWND() const { return hwnd; };
 	inline HDC getHDC() const { return hdc; };

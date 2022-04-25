@@ -4,7 +4,7 @@
 int main()
 {
 	WaaWindow wnd;
-	wnd.startWaa();
+	wnd.startWaaDesktop();
 
 	return 0;
 }

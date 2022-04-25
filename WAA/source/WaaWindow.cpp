@@ -1,7 +1,9 @@
 #include "WaaWindow.h"
 
-void WaaWindow::waaCycle(bool* running, HDC hdc)
+void WaaWindow::waaCycle(bool* running)
 {
+	HDC hdc = getHDC();
+
 	HBRUSH brush = CreateSolidBrush(RGB(100, 200, 150));
 	int x, y;
 	while (*running) {

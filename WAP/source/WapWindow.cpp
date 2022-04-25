@@ -101,8 +101,6 @@ WapWindow::WapWindow()
 	), 
 	hdc(GetDC(hwnd))
 {
-	HWND worker_w = getWorkerW();
-
 	#if defined(_DEBUG)
 	if (!checkWindow())
 		WAP_ERROR("Error creating window");
@@ -110,7 +108,6 @@ WapWindow::WapWindow()
 		WAP_ERROR("Error getting DC");
 	#endif
 
-	SetParent(hwnd, worker_w);
 	SetWindowLongPtr(hwnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(this));
 
 	nid.cbSize = sizeof(nid);
@@ -128,9 +125,6 @@ WapWindow::WapWindow()
 
 WapWindow::~WapWindow()
 {
-	Shell_NotifyIconA(NIM_DELETE, &nid);
-	WAP_INFO("Deleted notify icon");
-
 	DeleteObject(nid.hIcon);
 	WAP_INFO("Deleted icon");
 
@@ -138,21 +132,25 @@ WapWindow::~WapWindow()
 }
 
 
-void WapWindow::startWaa()
+void WapWindow::startWaaDesktop()
 {
-	running = true;
+	WAP_WARN("Starting Desktop WAA");
 
-	ShowWindow(hwnd, SW_SHOWMAXIMIZED);
-	Shell_NotifyIconA(NIM_ADD, &nid);
+	HWND worker_w = getWorkerW();
+	SetParent(hwnd, worker_w); // parent
+	WAP_INFO("Set parent window");
+	ShowWindow(hwnd, SW_SHOWMAXIMIZED); // window
+	WAP_INFO("Showed window");
+	Shell_NotifyIconA(NIM_ADD, &nid); // notify icon
 	WAP_INFO("Showed notify icon");
 
-	std::thread waa_thread(&WapWindow::waaCycle, this, &running, hdc);
+	running = true;
+	std::thread waa_thread(&WapWindow::waaCycle, this, &running);
 	WAP_SPECIALINFO("Started WAA");
 
 	WAP_INFO("Started msg cycle");
 	MSG msg;
 	while (GetMessage(&msg, 0, 0, 0) != 0) {
-		TranslateMessage(&msg);
 		DispatchMessage(&msg);
 	}
 	running = false;
@@ -161,6 +159,34 @@ void WapWindow::startWaa()
 	waa_thread.join();
 	WAP_SPECIALINFO("Finished WAA");
 
+	Shell_NotifyIconA(NIM_DELETE, &nid); // notify icon
+	WAP_INFO("Deleted notify icon");
+
 	WapWindow::resetWallpaper();
 	WAP_INFO("Reset wallpaper");
+}
+
+void WapWindow::startWaaWindow(HWND parent, int x, int y, int w, int h)
+{
+	WAP_WARN("Starting Window WAA");
+
+	SetParent(hwnd, parent); // parent
+	WAP_INFO("Set parent window");
+	SetWindowPos(hwnd, HWND_TOP, x, y, w, h, SWP_SHOWWINDOW);
+	WAP_INFO("Showed window");
+
+	running = true;
+	std::thread waa_thread(&WapWindow::waaCycle, this, &running);
+	WAP_SPECIALINFO("Started WAA");
+
+	WAP_INFO("Started msg cycle");
+	MSG msg;
+	while (GetMessage(&msg, 0, 0, 0) != 0) {
+		DispatchMessage(&msg);
+	}
+	running = false;
+	WAP_WARN("Closing WAP window");
+
+	waa_thread.join();
+	WAP_SPECIALINFO("Finished WAA");
 }

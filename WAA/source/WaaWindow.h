@@ -5,7 +5,7 @@
 class WaaWindow : public WapWindow
 {
 private:
-	void waaCycle(bool* running, HDC hdc);
+	void waaCycle(bool* running);
 
 	inline int onMouseMove() { return 0; };
 	inline int onMouseDown() { return 0; }
