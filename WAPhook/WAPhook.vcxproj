@@ -13,19 +13,19 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{59255f0a-4b30-4ca7-b9b9-40d88e50c9f9}</ProjectGuid>
-    <RootNamespace>WAP</RootNamespace>
+    <ProjectGuid>{37778527-32ea-43f8-bf15-9563bdc03430}</ProjectGuid>
+    <RootNamespace>WAPhook</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -47,35 +47,27 @@
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)bin\$(Configuration)-$(Platform)\$(ProjectName)\</OutDir>
     <IntDir>$(SolutionDir)bin-interm\$(Configuration)-$(Platform)\$(ProjectName)\</IntDir>
-    <TargetName>$(ProjectName)</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)bin\$(Configuration)-$(Platform)\$(ProjectName)\</OutDir>
     <IntDir>$(SolutionDir)bin-interm\$(Configuration)-$(Platform)\$(ProjectName)\</IntDir>
-    <TargetName>$(ProjectName)</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WAP_API;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WAP_EXPORT;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\WAPhook\source\</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>EasyLoger.lib;</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(ProjectDir)libraries\EasyLoger\;</AdditionalLibraryDirectories>
+      <AdditionalDependencies>user32.lib</AdditionalDependencies>
+      <AdditionalOptions>/SECTION:.hook_data,RWS %(AdditionalOptions)</AdditionalOptions>
     </Link>
-    <Lib>
-      <AdditionalLibraryDirectories>$(OutDir)..\WAPhook\;$(ProjectDir)libraries\EasyLoger\</AdditionalLibraryDirectories>
-      <AdditionalDependencies>user32.lib;gdi32.lib;shell32.lib;WAPhook.lib;EasyLoger.lib</AdditionalDependencies>
-      <AdditionalOptions>/ignore:4006 %(AdditionalOptions)</AdditionalOptions>
-    </Lib>
     <PostBuildEvent>
-      <Command>xcopy /Y $(IntDir)WAP.res $(OutDir)</Command>
+      <Command>xcopy /Y $(TargetPath) $(TargetDir)..\WAA\</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -84,44 +76,26 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WAP_API;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WAP_EXPORT;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\WAPhook\source\</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>user32.lib</AdditionalDependencies>
+      <AdditionalOptions>/SECTION:.hook_data,RWS %(AdditionalOptions)</AdditionalOptions>
     </Link>
-    <Lib>
-      <AdditionalLibraryDirectories>$(OutDir)..\WAPhook\</AdditionalLibraryDirectories>
-      <AdditionalDependencies>user32.lib;gdi32.lib;shell32.lib;WAPhook.lib;</AdditionalDependencies>
-      <AdditionalOptions>/ignore:4006 %(AdditionalOptions)</AdditionalOptions>
-    </Lib>
     <PostBuildEvent>
-      <Command>xcopy /Y $(IntDir)WAP.res $(OutDir)</Command>
+      <Command>xcopy /Y $(TargetPath) $(TargetDir)..\WAA\</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="source\logers.h" />
-    <ClInclude Include="source\types.h" />
-    <ClInclude Include="source\window_funcs.h" />
-    <ClInclude Include="wap.h" />
-    <ClInclude Include="source\WapWindow.h" />
+    <ClCompile Include="source\hook.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="source\logers.cpp" />
-    <ClCompile Include="source\WapWindow.cpp" />
-    <ClCompile Include="source\window_funcs.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="WAP.rc" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\WAPhook\WAPhook.vcxproj">
-      <Project>{37778527-32ea-43f8-bf15-9563bdc03430}</Project>
-    </ProjectReference>
+    <ClInclude Include="source\hook.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

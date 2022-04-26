@@ -4,3 +4,4 @@
 
 
 HWND getWorkerW();
+HWND getSysListView();

@@ -30,8 +30,6 @@ static HWND initWorker()
 }
 
 
-
-
 HWND getWorkerW()
 {
 	static HWND worker_w = NULL;
@@ -41,4 +39,23 @@ HWND getWorkerW()
 	}
 
 	return worker_w;
+}
+
+
+
+static BOOL CALLBACK getSysListViewCallback(HWND hwnd, LPARAM lparam)
+{
+	HWND sd_df = FindWindowExA(hwnd, NULL, "SHELLDLL_DefView", NULL);
+	if (sd_df) {
+		*reinterpret_cast<HWND*>(lparam) = FindWindowExA(sd_df, NULL, "SysListView32", NULL);
+		return false;
+	}
+	return true;
+}
+
+HWND getSysListView()
+{
+	HWND slv = 0;
+	EnumWindows(getSysListViewCallback, (LPARAM)&slv);
+	return slv;
 }

@@ -15,15 +15,12 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="source\waa.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="source\WaaWindow.cpp">
+    <ClCompile Include="source\hook.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="source\WaaWindow.h">
+    <ClInclude Include="source\hook.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

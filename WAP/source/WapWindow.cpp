@@ -1,17 +1,18 @@
 #include "types.h"
+#include "logers.h"
 
 #include "WapWindow.h"
 #include "window_funcs.h"
+#include "hook.h"
 
-#include "logers.h"
 #include <thread>
 
 
 // STATIC ->
 
-const char* WapWindow::w_name = "WAP window";
-const char* WapWindow::wc_name = "WAP class";
-const char* WapWindow::nid_tip = "Click to quit WAP";
+const char* WapWindow::w_name = "WAP window\0";
+const char* WapWindow::wc_name = "WAP class\0";
+const char* WapWindow::nid_tip = "Click to quit WAP\0";
 
 const WNDCLASSA WapWindow::wc = {
 	CS_OWNDC | CS_NOCLOSE | CS_DBLCLKS,
@@ -144,7 +145,12 @@ void WapWindow::startWaaDesktop()
 	Shell_NotifyIconA(NIM_ADD, &nid); // notify icon
 	WAP_INFO("Showed notify icon");
 
+
 	running = true;
+
+	setHooks(hwnd, getSysListView());
+	WAP_INFO("Set hooks");
+
 	std::thread waa_thread(&WapWindow::waaCycle, this, &running);
 	WAP_SPECIALINFO("Started WAA");
 
@@ -155,6 +161,9 @@ void WapWindow::startWaaDesktop()
 	}
 	running = false;
 	WAP_WARN("Closing WAP window");
+
+	removeHooks();
+	WAP_INFO("Removed hooks");
 
 	waa_thread.join();
 	WAP_SPECIALINFO("Finished WAA");
@@ -174,6 +183,7 @@ void WapWindow::startWaaWindow(HWND parent, int x, int y, int w, int h)
 	WAP_INFO("Set parent window");
 	SetWindowPos(hwnd, HWND_TOP, x, y, w, h, SWP_SHOWWINDOW);
 	WAP_INFO("Showed window");
+
 
 	running = true;
 	std::thread waa_thread(&WapWindow::waaCycle, this, &running);
