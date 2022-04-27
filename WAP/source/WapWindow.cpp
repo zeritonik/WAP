@@ -6,6 +6,7 @@
 #include "hook.h"
 
 #include <thread>
+#include <Windowsx.h>
 
 
 // STATIC ->
@@ -63,16 +64,20 @@ LRESULT CALLBACK WapWindow::WapWindowProc(HWND hwnd, UINT msg, WPARAM wparam, LP
 	}
 		return 0;
 
-	case WM_MOUSEMOVE:
-		return wap_w->onMouseMove();
+	case WM_MOUSEMOVE: // move mouse
+		return wap_w->onMouseMove(GET_X_LPARAM(lparam), GET_Y_LPARAM(lparam));
+	case WM_LBUTTONDOWN: // down button
+		return wap_w->onMouseDown(MOUSE_L, GET_X_LPARAM(lparam), GET_Y_LPARAM(lparam));
 	case WM_MBUTTONDOWN:
-	case WM_LBUTTONDOWN:
+		return wap_w->onMouseDown(MOUSE_M, GET_X_LPARAM(lparam), GET_Y_LPARAM(lparam));
 	case WM_RBUTTONDOWN:
-		return wap_w->onMouseDown();
+		return wap_w->onMouseDown(MOUSE_R, GET_X_LPARAM(lparam), GET_Y_LPARAM(lparam));
+	case WM_LBUTTONUP: // up button
+		return wap_w->onMouseUp(MOUSE_L, GET_X_LPARAM(lparam), GET_Y_LPARAM(lparam));
 	case WM_MBUTTONUP:
-	case WM_LBUTTONUP:
+		return wap_w->onMouseUp(MOUSE_M, GET_X_LPARAM(lparam), GET_Y_LPARAM(lparam));
 	case WM_RBUTTONUP:
-		return wap_w->onMouseUp();
+		return wap_w->onMouseUp(MOUSE_R, GET_X_LPARAM(lparam), GET_Y_LPARAM(lparam));
 
 	default:
 		return DefWindowProc(hwnd, msg, wparam, lparam);
