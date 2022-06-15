@@ -4,16 +4,15 @@
 #include "WapWindow.h"
 #include "window_funcs.h"
 #include "hook.h"
-
-#include <thread>
+\
 #include <Windowsx.h>
 
 
 // STATIC ->
 
-const char* WapWindow::w_name = "WAP window\0";
-const char* WapWindow::wc_name = "WAP class\0";
-const char* WapWindow::nid_tip = "Click to quit WAP\0";
+const char* WapWindow::w_name = "WAP window";
+const char* WapWindow::wc_name = "WAP class";
+const char* WapWindow::nid_tip = "Click to quit WAP";
 
 const WNDCLASSA WapWindow::wc = {
 	CS_OWNDC | CS_NOCLOSE | CS_DBLCLKS,
@@ -55,14 +54,8 @@ LRESULT CALLBACK WapWindow::WapWindowProc(HWND hwnd, UINT msg, WPARAM wparam, LP
 		return 0;
 
 	case WM_PAINT: {
-		PAINTSTRUCT ps;
-		HBRUSH brush = CreateSolidBrush(RGB(0, 0, 0));
-		HDC hdc = BeginPaint(hwnd, &ps);
-		FillRect(hdc, &ps.rcPaint, brush);
-		EndPaint(hwnd, &ps);
-		DeleteObject(brush);
-	}
-		return 0;
+		ValidateRect(hwnd, NULL);
+	} return 0;
 
 	case WM_MOUSEMOVE: // move mouse
 		return wap_w->onMouseMove(GET_X_LPARAM(lparam), GET_Y_LPARAM(lparam));
@@ -156,7 +149,7 @@ void WapWindow::startWaaDesktop()
 	setHooks(hwnd, getSysListView());
 	WAP_INFO("Set hooks");
 
-	std::thread waa_thread(&WapWindow::waaCycle, this, &running);
+	std::thread waa_thread(&WapWindow::waaCycle, this);
 	WAP_SPECIALINFO("Started WAA");
 
 	WAP_INFO("Started msg cycle");
@@ -191,7 +184,7 @@ void WapWindow::startWaaWindow(HWND parent, int x, int y, int w, int h)
 
 
 	running = true;
-	std::thread waa_thread(&WapWindow::waaCycle, this, &running);
+	std::thread waa_thread(&WapWindow::waaCycle, this);
 	WAP_SPECIALINFO("Started WAA");
 
 	WAP_INFO("Started msg cycle");

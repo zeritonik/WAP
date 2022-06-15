@@ -1,6 +1,7 @@
 #pragma once
 
 #include <windows.h>
+#include <thread>
 
 
 class WapWindow
@@ -25,7 +26,7 @@ private:
 
 	NOTIFYICONDATAA nid = { 0 };
 
-	virtual void waaCycle(bool*) = 0;
+	virtual void waaCycle() = 0;
 
 	/* messages ---*/
 	virtual inline int onMouseMove(int x, int y) = 0;
