@@ -24,10 +24,7 @@ LRESULT CALLBACK MouseHookProc(int code, WPARAM wparam, LPARAM lparam)
 {
 	if (code >= 0) {
 		MOUSEHOOKSTRUCT* mhs = reinterpret_cast<MOUSEHOOKSTRUCT*>(lparam);
-		LPARAM mes_lparam = mhs->pt.y;
-		mes_lparam = (mes_lparam << sizeof(LPARAM) * 4) | mhs->pt.x;
-
-		SendMessage(hooker, (UINT)wparam, NULL, mes_lparam);
+		SendMessage(hooker, (UINT)wparam, NULL, MAKELPARAM(mhs->pt.x, mhs->pt.y));
 	}
 	return CallNextHookEx(mouse_hook, code, wparam, lparam);
 }
