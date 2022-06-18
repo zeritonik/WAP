@@ -125,7 +125,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>WAP.lib;WAP.res</AdditionalDependencies>
+      <AdditionalDependencies>WAP.lib;WAP.res;d2d1.lib;ole32.lib;winmm.lib;</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(OutDir)..\WAP\</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
@@ -144,21 +144,24 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>WAP.lib;WAP.res</AdditionalDependencies>
+      <AdditionalDependencies>WAP.lib;WAP.res;d2d1.lib;ole32.lib;winmm.lib;</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(OutDir)..\WAP\</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="source\ParticleSystem.cpp" />
+    <ClCompile Include="source\my_direct2d.cpp" />
     <ClCompile Include="source\waa.cpp" />
     <ClCompile Include="source\WaaWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\WAP\WAP.vcxproj">
-      <Project>{59255f0a-4b30-4ca7-b9b9-40d88e50c9f9}</Project>
-    </ProjectReference>
+    <ClInclude Include="source\ParticleSystem.h" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="source\my_direct2d.h" />
+    <ClInclude Include="source\WaaWindow.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="source\WaaWindow.h" />
+    <ResourceCompile Include="resource.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

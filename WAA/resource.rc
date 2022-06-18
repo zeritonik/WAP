@@ -1,0 +1,10 @@
+#include "resource.h"
+
+BACK_BITMAP_ID PNG "C:\\development\\c++\\WAP\\WAA\\images\\walp2_back.png"
+
+STRINGTABLE
+{
+	TORCH_DATA_ID "335 490 \
+1155 570 \
+1830 550"
+}
